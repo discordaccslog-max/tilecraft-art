@@ -1,10 +1,10 @@
 /* Tilecraft Studio — service worker. Keeps the studio and every pack you have opened
  * available offline. The app shell updates in the background; pack files are cached
  * the first time they load. */
-var VERSION = 'tilecraft-studio-v1';
+var VERSION = 'tilecraft-studio-v2';
 var SHELL = ['./', 'index.html', 'studio.css', 'app.js', 'playground.js', 'characters.js', 'generator.js', 'tiled.js', 'atlas-gen.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png',
   '../css/site.css', '../js/site-config.js', '../js/products.js', '../js/autotile.js', '../js/license.js', '../js/keyentry.js',
-  '../fonts/schibsted-grotesk-latin.woff2', '../fonts/pixelify-sans-latin.woff2', '../favicon.svg', '../assets/catalog.json'];
+  '../fonts/geist-latin.woff2', '../favicon.svg', '../assets/catalog.json'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(VERSION).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));

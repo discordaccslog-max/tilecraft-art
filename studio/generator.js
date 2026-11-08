@@ -32,7 +32,7 @@ window.TCGenerator = (function () {
     var sizeSel = h('select', { 'aria-label': 'Map size', onchange: function () { st.size = sizeSel.value; generate(); } });
     SIZES.forEach(function (s) { sizeSel.appendChild(h('option', { value: s[0], selected: s[0] === st.size }, s[1])); });
     var slider = function (key, label) {
-      var out = h('output', { class: 'pixel' }, st[key] + '%');
+      var out = h('output', { class: 'kicker' }, st[key] + '%');
       var r = h('input', { type: 'range', min: 0, max: 100, step: 5, value: st[key], id: 'gen-' + key, oninput: function () { st[key] = +r.value; out.textContent = r.value + '%'; soon(); } });
       return h('div', null, h('label', { for: 'gen-' + key }, label), h('div', { class: 'range-row' }, r, out));
     };

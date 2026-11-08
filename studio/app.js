@@ -118,7 +118,7 @@
       var st = steps[i]; if (lit) lit.classList.remove('tour-highlight');
       lit = st.el && document.querySelector(st.el); if (lit) { lit.classList.add('tour-highlight'); lit.scrollIntoView({ block: 'nearest', behavior: reduce.matches ? 'auto' : 'smooth' }); }
       card.innerHTML = '';
-      card.appendChild(h('p', { class: 'small muted pixel' }, 'Tip ' + (i + 1) + ' of ' + steps.length));
+      card.appendChild(h('p', { class: 'small muted kicker' }, 'Tip ' + (i + 1) + ' of ' + steps.length));
       card.appendChild(h('h2', { id: 'tour-title' }, st.title));
       card.appendChild(h('p', null, st.text));
       var next = h('button', { class: 'btn btn-primary', type: 'button', onclick: function () { if (i < steps.length - 1) { i++; show(); } else finish(); } }, i < steps.length - 1 ? 'Next' : 'Got it');
@@ -138,7 +138,7 @@
   /* ---------- key form ---------- */
   function keyForm(prefix, onDone) {
     var wrap = h('div', { class: 'panel' });
-    wrap.innerHTML = '<form class="key-form" data-key-form novalidate><fieldset><legend>Add a license key</legend><div class="key-segments"><span class="key-prefix pixel" aria-hidden="true">TILE</span><span class="dash" aria-hidden="true">–</span>' +
+    wrap.innerHTML = '<form class="key-form" data-key-form novalidate><fieldset><legend>Add a license key</legend><div class="key-segments"><span class="key-prefix kicker" aria-hidden="true">TILE</span><span class="dash" aria-hidden="true">–</span>' +
       [['2', 'Product code, 2 characters'], ['5', 'Key part 1, 5 characters'], ['5', 'Key part 2, 5 characters'], ['4', 'Check code, 4 characters']].map(function (s, i) { return '<input class="seg" id="' + prefix + '-' + i + '" data-len="' + s[0] + '" maxlength="' + s[0] + '" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="' + s[1] + '">' + (i < 3 ? '<span class="dash" aria-hidden="true">–</span>' : ''); }).join('') +
       '</div></fieldset><p class="key-error" role="alert"></p><button type="submit" class="btn btn-primary">Unlock</button></form>';
     window.TCKeyEntry.mount(wrap.querySelector('form'), { onUnlock: function (res) { toast('Unlocked: ' + res.packs.length + (res.packs.length > 1 ? ' packs' : ' pack')); onDone(res); } });
@@ -233,7 +233,7 @@
     return g;
   }
   function zoomControl(value, onChange, min, max) {
-    var out = h('output', { class: 'pixel' }, value + '×');
+    var out = h('output', { class: 'kicker' }, value + '×');
     var r = h('input', { type: 'range', min: min || 1, max: max || 8, step: 1, value: value, 'aria-label': 'Zoom', oninput: function () { out.textContent = r.value + '×'; onChange(+r.value); } });
     return h('label', null, 'Zoom', r, out);
   }
@@ -325,7 +325,7 @@
     var listEl = h('div', { class: 'anim-list', role: 'list' });
     var stage = h('div', { class: 'player-stage bg-checker', tabindex: '0', 'aria-label': 'Animation preview. Space plays or pauses, arrow keys step frames.' });
     var playBtn = h('button', { class: 'tool-btn', type: 'button' });
-    var frameInfo = h('span', { class: 'pixel', 'aria-live': 'polite' });
+    var frameInfo = h('span', { class: 'kicker', 'aria-live': 'polite' });
     var frames = h('div', { class: 'frame-list', role: 'group', 'aria-label': 'Frames' });
     var speed = h('select', { 'aria-label': 'Playback speed' }); [0.25, 0.5, 1, 2, 4].forEach(function (s) { speed.appendChild(h('option', { value: s, selected: s === 1 }, s + '×')); });
     speed.addEventListener('change', function () { st.speed = +speed.value; });

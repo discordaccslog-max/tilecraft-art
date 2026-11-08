@@ -25,8 +25,8 @@ html.large-ui .icon-btn, html.large-ui .tool-btn { min-width: 52px; min-height: 
 a.slot:focus-visible { border-color: var(--focus); }
 .slot .icon { width: 96px; height: 96px; display: grid; place-items: center; }
 .slot .name { font-weight: 700; font-size: .95rem; line-height: 1.25; }
-.slot .count { font-family: var(--pixel); font-size: .85rem; color: var(--accent); }
-.slot .badge { position: absolute; top: 6px; right: 6px; font-family: var(--pixel); font-size: .72rem; padding: 1px 6px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); }
+.slot .count { font-variant-numeric: tabular-nums; font-weight: 550; font-size: .85rem; color: var(--accent); }
+.slot .badge { position: absolute; top: 6px; right: 6px; font-variant-numeric: tabular-nums; font-weight: 550; font-size: .72rem; padding: 1px 6px; border-radius: 6px; background: var(--accent); color: var(--accent-ink); }
 .library-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 18px; margin-top: 18px; }
 @media (max-width: 900px) { .library-grid { grid-template-columns: 1fr; } }
 .more-packs { list-style: none; padding: 0; margin: 0; }
@@ -59,7 +59,7 @@ a.slot:focus-visible { border-color: var(--focus); }
 .asset-card:focus-visible { outline: 3px solid var(--focus); }
 .asset-card .art { display: flex; align-items: center; justify-content: center; min-height: 72px; padding: 8px; overflow: hidden; }
 .asset-card .label { padding: 6px 8px 8px; font-size: .8rem; line-height: 1.3; }
-.asset-card .label small { display: block; color: var(--muted); font-family: var(--pixel); font-size: .72rem; word-break: break-all; }
+.asset-card .label small { display: block; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 550; font-size: .72rem; word-break: break-all; }
 .more-row { text-align: center; margin: 16px 0; }
 
 /* dialog */
@@ -81,7 +81,7 @@ dialog.detail::backdrop { background: rgba(8, 6, 20, .66); }
 .anim-list button[aria-current="true"] { background: var(--surface-2); color: var(--accent); font-weight: 700; }
 .player-stage { display: flex; align-items: center; justify-content: center; min-height: 280px; border-radius: 10px; overflow: auto; margin-bottom: 12px; }
 .frame-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.frame-list button { background: var(--surface); border: 2px solid var(--line); border-radius: 8px; padding: 4px; cursor: pointer; color: var(--text); font-size: .72rem; font-family: var(--pixel); }
+.frame-list button { background: var(--surface); border: 2px solid var(--line); border-radius: 8px; padding: 4px; cursor: pointer; color: var(--text); font-size: .72rem; font-variant-numeric: tabular-nums; font-weight: 550; }
 .frame-list button[aria-current="true"] { border-color: var(--accent); }
 @media (max-width: 760px) { .anim-layout { grid-template-columns: 1fr; } .anim-list { max-height: 260px; } }
 
@@ -89,7 +89,7 @@ dialog.detail::backdrop { background: rgba(8, 6, 20, .66); }
 .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
 .swatch { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); cursor: pointer; padding: 0; color: var(--text); text-align: left; }
 .swatch .chip-color { height: 54px; }
-.swatch span { padding: 6px 8px; font-family: var(--pixel); font-size: .85rem; }
+.swatch span { padding: 6px 8px; font-variant-numeric: tabular-nums; font-weight: 550; font-size: .85rem; }
 .recolor { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 10px 0 16px; }
 .recolor input[type="color"] { width: 48px; height: 40px; border: 1px solid var(--line); border-radius: 8px; background: none; padding: 2px; }
 
@@ -140,7 +140,7 @@ dialog.detail::backdrop { background: rgba(8, 6, 20, .66); }
 .tour-card h2 { font-size: 1.1rem; }
 .tour-actions { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
 .tour-highlight { position: relative; z-index: 81; box-shadow: 0 0 0 4px var(--accent); border-radius: 10px; }
-.kbd { font-family: var(--pixel); font-size: .8rem; padding: 1px 6px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
+.kbd { font-variant-numeric: tabular-nums; font-weight: 550; font-size: .8rem; padding: 1px 6px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); }
 .studio-main .seg { font-size: 1.05rem; min-height: 44px; }
 .studio-main .key-prefix { font-size: 1.05rem; }
 .studio-top .brand { flex: none; }

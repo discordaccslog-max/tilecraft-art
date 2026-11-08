@@ -190,7 +190,7 @@ window.TCPlayground = (function () {
     var undoBtn = h('button', { class: 'tool-btn', type: 'button', title: 'Undo (Ctrl+Z)', onclick: doUndo }, 'Undo'), redoBtn = h('button', { class: 'tool-btn', type: 'button', title: 'Redo (Ctrl+Shift+Z)', onclick: doRedo }, 'Redo');
     var gridBtn = h('button', { class: 'tool-btn', type: 'button', 'aria-pressed': 'false', title: 'Grid (G)', onclick: function () { grid = !grid; gridBtn.setAttribute('aria-pressed', String(grid)); render(); } }, 'Grid');
     var animBtn = h('button', { class: 'tool-btn', type: 'button', 'aria-pressed': String(animate), onclick: function () { animate = !animate; animBtn.setAttribute('aria-pressed', String(animate)); render(); } }, 'Animate');
-    var zOut = h('output', { class: 'pixel' }, zoom + '×');
+    var zOut = h('output', { class: 'kicker' }, zoom + '×');
     tb.appendChild(undoBtn); tb.appendChild(redoBtn); tb.appendChild(gridBtn); if (hasAnim) tb.appendChild(animBtn);
     tb.appendChild(h('button', { class: 'tool-btn', type: 'button', 'aria-label': 'Zoom out', onclick: function () { setZoom(zoom - 1); zOut.textContent = zoom + '×'; } }, '−'));
     tb.appendChild(zOut);

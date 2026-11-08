@@ -3,7 +3,7 @@
  * Tiled files and zips, then generates the website.  Usage: node build/build.js
  *
  * Third-party libraries (permissive licenses): pngjs (MIT) for PNG encoding,
- * fflate (MIT) for zip files. Fonts: Schibsted Grotesk and Pixelify Sans (SIL OFL 1.1). */
+ * fflate (MIT) for zip files. Font: Geist (SIL OFL 1.1). */
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');

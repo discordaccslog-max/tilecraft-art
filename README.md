@@ -40,7 +40,7 @@ The site is also hosted on Vercel. `npm run deploy:vercel` copies only the built
 ## Third-party code and fonts
 
 - [pngjs](https://github.com/pngjs/pngjs) (MIT) and [fflate](https://github.com/101arrowz/fflate) (MIT), used only by the build script.
-- Schibsted Grotesk and Pixelify Sans, SIL Open Font License 1.1 — see `fonts/`.
+- Geist, SIL Open Font License 1.1 — see `fonts/`.
 
 ## A note on access control
 

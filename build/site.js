@@ -38,7 +38,7 @@ function page(o) {
   const r = o.absRoot || '../'.repeat(o.depth || 0);
   const url = SITE + (o.path || '');
   const headAssets = `<link rel="icon" href="${r}favicon.svg" type="image/svg+xml">
-<link rel="preload" href="${r}fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${r}fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${r}css/site.css">
 ${o.head || ''}<script>(function(){var t;try{t=localStorage.getItem('tilecraft.theme')}catch(e){}if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
 `;
@@ -149,10 +149,10 @@ function productCard(p, st, r, big) {
   <a class="card-link" href="${r}products/${p.id}/">
     <div class="vignette" data-scene="${p.id}" role="img" aria-label="Animated preview of ${esc(p.name)}, rendered from the pack's files"></div>
     <div class="card-body">
-      <p class="tier pixel">${p.tier}</p>
+      <p class="tier kicker">${p.tier}</p>
       <h3>${esc(p.name)}</h3>
       <p class="card-desc">${esc(COPY[p.id].short)}</p>
-      <p class="card-meta"><span class="price pixel" data-price="${p.id}">$${p.price}</span><span class="muted small">${fmt(st.assets)} assets · ${fmt(st.frames)} frames</span></p>
+      <p class="card-meta"><span class="price kicker" data-price="${p.id}">$${p.price}</span><span class="muted small">${fmt(st.assets)} assets · ${fmt(st.frames)} frames</span></p>
     </div>
   </a>
 </article>`;
@@ -223,14 +223,14 @@ function productPage(p, packs, products, r) {
   <nav class="breadcrumb" aria-label="Breadcrumb"><a href="${r}">Home</a> <span aria-hidden="true">/</span> <a href="${r}#${studio ? 'studio-editions' : 'packs'}">${studio ? 'Studio Editions' : 'Essentials'}</a></nav>
   <div class="product-hero">
     <div class="product-intro">
-      <p class="tier pixel">${p.tier}</p>
+      <p class="tier kicker">${p.tier}</p>
       <h1>${esc(p.name)}</h1>
       <p class="lede">${esc(copy.tagline)}</p>
       <div class="vignette vignette--large" data-scene="${p.id}" data-scale="max" role="img" aria-label="Animated preview of ${esc(p.name)}, rendered from the pack's files"></div>
       <p class="caption">Live preview rendered in your browser from the pack's own sprite sheets.</p>
     </div>
     <aside class="buy-panel" aria-label="Price and purchase">
-      <p class="price-big pixel" data-price="${p.id}">$${p.price}</p>
+      <p class="price-big kicker" data-price="${p.id}">$${p.price}</p>
       <p class="buy-terms">Instant access with a license key · <a href="${r}refunds/">14-day refund policy</a> · Applicable taxes are shown at checkout</p>
       <div class="buy-area" data-buy="${p.id}"></div>
       <ul class="buy-facts">
@@ -270,7 +270,7 @@ function homePage(products, packs, r, sample) {
   const body = `
 <section class="hero" aria-labelledby="hero-h">
   <div class="wrap hero-copy">
-    <p class="eyebrow pixel">16×16 pixel art packs</p>
+    <p class="eyebrow kicker">16×16 pixel art packs</p>
     <h1 id="hero-h">Original pixel art for your game, with a studio to try it in.</h1>
     <p class="lede">Tilesets with full autotiling, effects, interface pieces and modular characters — each pack opens in the Tilecraft Studio, where you can preview every asset, paint test maps and download the files.</p>
     <div class="cta-row"><a class="btn btn-primary" href="#packs">Browse the packs</a><a class="btn btn-ghost" href="#free-sampler">Paint with the free sampler</a></div>
@@ -285,7 +285,7 @@ function homePage(products, packs, r, sample) {
 
 <section class="wrap painter-section" id="free-sampler" aria-labelledby="painter-h">
   <div class="painter-copy">
-    <p class="eyebrow pixel">Free · same license</p>
+    <p class="eyebrow kicker">Free · same license</p>
     <h2 id="painter-h">Paint a little map</h2>
     <p>This painter uses the free Mossway Sampler: moss ground, stepping stones that connect automatically, and a few plants. Click or tap to paint, or use the arrow keys and Space. The sampler's tiles aren't part of any paid pack, and it uses the same license.</p>
     <p><a class="btn btn-primary" href="${r}assets/packs/sample/tilecraft-sample.zip" download>Download the free sampler (.zip, ${kb(sample.zipSize)})</a></p>
@@ -304,7 +304,7 @@ function homePage(products, packs, r, sample) {
 
 <section class="tier-section" id="packs" aria-labelledby="ess-h">
   <div class="wrap">
-    <div class="section-head"><p class="eyebrow pixel">Tier one</p><h2 id="ess-h">Essentials</h2><p class="muted">Focused packs, one area each. Buy one, or all six in the bundle.</p></div>
+    <div class="section-head"><p class="eyebrow kicker">Tier one</p><h2 id="ess-h">Essentials</h2><p class="muted">Focused packs, one area each. Buy one, or all six in the bundle.</p></div>
     <div class="card-grid">${ess.map(p => productCard(p, statsFor(p, packs), r)).join('\n')}</div>
   </div>
 </section>
@@ -312,11 +312,11 @@ function homePage(products, packs, r, sample) {
 <section class="studio-showcase" id="studio-editions" aria-labelledby="stu-h">
   <div class="parallax" aria-hidden="true"><div class="px-layer" data-depth="0.15" data-scene-bg="grand-atlas"></div><div class="px-layer" data-depth="0.35" data-scene-bg="four-seasons"></div></div>
   <div class="wrap studio-inner">
-    <div class="section-head"><p class="eyebrow pixel">Tier two</p><h2 id="stu-h">Studio Editions</h2><p>Bigger, complete systems: a whole matched world, six biomes in four seasons, or an overworld generator built into the studio.</p></div>
+    <div class="section-head"><p class="eyebrow kicker">Tier two</p><h2 id="stu-h">Studio Editions</h2><p>Bigger, complete systems: a whole matched world, six biomes in four seasons, or an overworld generator built into the studio.</p></div>
     <article class="featured">
       <a class="featured-link" href="${r}products/grand-atlas/">
         <div class="vignette vignette--featured" data-scene="grand-atlas" data-scale="max" role="img" aria-label="Animated preview of a generated Grand Atlas world"></div>
-        <div class="featured-copy"><p class="tier pixel">Featured · Studio Edition</p><h3>Grand Atlas: Overworld Studio</h3><p>${esc(COPY['grand-atlas'].short)}</p><p class="card-meta"><span class="price pixel" data-price="grand-atlas">$75</span><span class="small">${fmt(packs['grand-atlas'].stats().assets)} assets · ${packs['grand-atlas'].autotiles.length} autotiling systems · seeded generator</span></p></div>
+        <div class="featured-copy"><p class="tier kicker">Featured · Studio Edition</p><h3>Grand Atlas: Overworld Studio</h3><p>${esc(COPY['grand-atlas'].short)}</p><p class="card-meta"><span class="price kicker" data-price="grand-atlas">$75</span><span class="small">${fmt(packs['grand-atlas'].stats().assets)} assets · ${packs['grand-atlas'].autotiles.length} autotiling systems · seeded generator</span></p></div>
       </a>
     </article>
     <div class="card-grid card-grid--studio">${stu.filter(p => p.id !== 'grand-atlas').map(p => productCard(p, statsFor(p, packs), r, true)).join('\n')}</div>
@@ -326,9 +326,9 @@ function homePage(products, packs, r, sample) {
 <section class="wrap steps" aria-labelledby="how-h">
   <h2 id="how-h">How buying and unlocking work</h2>
   <ol class="step-list">
-    <li><span class="step-n pixel">1</span><h3>Buy a pack</h3><p>Pay through the secure checkout. Taxes, if any, are shown before you pay.</p></li>
-    <li><span class="step-n pixel">2</span><h3>Get your key instantly</h3><p>Your license key appears on the confirmation page. Copy it and save it.</p></li>
-    <li><span class="step-n pixel">3</span><h3>Unlock in the studio</h3><p>Enter the key on the <a href="${r}unlock/">unlock page</a>. Preview, paint, and download your files.</p></li>
+    <li><span class="step-n kicker">1</span><h3>Buy a pack</h3><p>Pay through the secure checkout. Taxes, if any, are shown before you pay.</p></li>
+    <li><span class="step-n kicker">2</span><h3>Get your key instantly</h3><p>Your license key appears on the confirmation page. Copy it and save it.</p></li>
+    <li><span class="step-n kicker">3</span><h3>Unlock in the studio</h3><p>Enter the key on the <a href="${r}unlock/">unlock page</a>. Preview, paint, and download your files.</p></li>
   </ol>
 </section>
 
@@ -356,12 +356,12 @@ function proseDoc(doc, slug, desc, extra = '') {
 function thankYouPage(p, packs) {
   const r = '../../';
   const body = `<div class="wrap narrow thankyou" data-thankyou="${p.code}" data-product="${p.id}">
-  <p class="eyebrow pixel">Order confirmed</p>
+  <p class="eyebrow kicker">Order confirmed</p>
   <h1>Thank you — here's your license key</h1>
   <p class="lede">Your key for <strong>${esc(p.name)}</strong> is ready. It unlocks ${p.packs.length > 1 ? `all ${p.packs.length} Essentials packs` : 'your pack'} in the Tilecraft Studio.</p>
   <div class="key-reveal">
     <canvas class="chest" width="32" height="32" aria-hidden="true"></canvas>
-    <p class="key-display pixel" aria-live="polite" aria-atomic="true"><span class="sr-only">Your license key: </span><span data-key></span></p>
+    <p class="key-display kicker" aria-live="polite" aria-atomic="true"><span class="sr-only">Your license key: </span><span data-key></span></p>
   </div>
   <div class="key-actions">
     <button type="button" class="btn btn-primary" data-copy>Copy key</button>
@@ -379,7 +379,7 @@ function keyEntry(idPrefix) {
   <fieldset>
     <legend>License key</legend>
     <div class="key-segments">
-      <span class="key-prefix pixel" aria-hidden="true">TILE</span><span class="dash" aria-hidden="true">–</span>
+      <span class="key-prefix kicker" aria-hidden="true">TILE</span><span class="dash" aria-hidden="true">–</span>
       <input class="seg" id="${idPrefix}-1" data-len="2" maxlength="2" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Product code, 2 characters"><span class="dash" aria-hidden="true">–</span>
       <input class="seg" id="${idPrefix}-2" data-len="5" maxlength="5" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Key part 1, 5 characters"><span class="dash" aria-hidden="true">–</span>
       <input class="seg" id="${idPrefix}-3" data-len="5" maxlength="5" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Key part 2, 5 characters"><span class="dash" aria-hidden="true">–</span>
@@ -394,7 +394,7 @@ function keyEntry(idPrefix) {
 function unlockPage() {
   const r = '../';
   const body = `<div class="wrap narrow unlock-page">
-  <p class="eyebrow pixel">Have a key?</p>
+  <p class="eyebrow kicker">Have a key?</p>
   <h1>Unlock your packs</h1>
   <p class="lede">Enter the license key from your order confirmation page. Your packs open in your library inside the Tilecraft Studio, on this device.</p>
   <div class="unlock-card">${keyEntry('k')}
@@ -443,7 +443,7 @@ function studioShell() {
 <link rel="icon" href="${r}favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="preload" href="${r}fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="${r}fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${r}css/site.css">
 <link rel="stylesheet" href="studio.css">
 <script>(function(){var t,b;try{t=localStorage.getItem('tilecraft.theme');b=localStorage.getItem('tilecraft.large')}catch(e){}if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);if(b==='1')document.documentElement.classList.add('large-ui')})();</script>
@@ -480,7 +480,7 @@ function notFound() {
   /* Hosts serve this page at any depth, and the site may live at the domain root (Vercel) or
    * under /tilecraft-art/ (GitHub Pages); dynamicBase makes every relative link resolve from the
    * site root on either host. */
-  const body = `<div class="wrap narrow notfound"><p class="eyebrow pixel">404</p><h1>This tile isn't on the map</h1><p class="lede">The page you're looking for doesn't exist or has moved.</p><div class="vignette" data-scene="sample" aria-hidden="true"></div><p><a class="btn btn-primary" href="./">Back to the home page</a> <a class="btn btn-ghost" href="unlock/">Enter a key</a></p></div>`;
+  const body = `<div class="wrap narrow notfound"><p class="eyebrow kicker">404</p><h1>This tile isn't on the map</h1><p class="lede">The page you're looking for doesn't exist or has moved.</p><div class="vignette" data-scene="sample" aria-hidden="true"></div><p><a class="btn btn-primary" href="./">Back to the home page</a> <a class="btn btn-ghost" href="unlock/">Enter a key</a></p></div>`;
   return page({ title: 'Page not found | Tilecraft Art', description: 'This page does not exist.', path: '404.html', depth: 0, dynamicBase: true, body, noindex: true, scripts: ['js/pixel.js'] });
 }
 
