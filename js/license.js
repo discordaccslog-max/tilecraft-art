@@ -10,6 +10,40 @@
   var CODES = { UX: ['interface'], MD: ['meadowlands'], FX: ['effects'], SH: ['stonehollow'], HV: ['hearthvale'], CK: ['character-kit'],
     EB: ['interface', 'meadowlands', 'effects', 'stonehollow', 'hearthvale', 'character-kit'], NK: ['ink-edition'], FS: ['four-seasons'], GA: ['grand-atlas'] };
   var STORE = 'tilecraft.keys';
+  /* Administrator key: unlocks every pack. Only its SHA-256 fingerprint is stored here, so the key
+   * cannot be rebuilt from this file. Replace it with `node build/admin-key.js`. */
+  var ADMIN = { code: 'AD', hash: '9b8a56441a1f662283d86d24a7825c3398cff6e23c7764e37b03dd129fb575fe' };
+  var ALL_PACKS = (function () { var seen = {}, out = []; for (var c in CODES) CODES[c].forEach(function (p) { if (!seen[p]) { seen[p] = 1; out.push(p); } }); return out; })();
+
+  /* SHA-256 of an ASCII string, as hex. Synchronous so key checks work the same in the browser and in Node. */
+  function sha256(ascii) {
+    var rr = function (v, n) { return (v >>> n) | (v << (32 - n)); };
+    var H = [], K = [], composite = {}, count = 0, i, j;
+    for (var c = 2; count < 64; c++) {
+      if (composite[c]) continue;
+      for (i = 0; i < 313; i += c) composite[i] = c;
+      H[count] = (Math.pow(c, 0.5) * 4294967296) | 0;
+      K[count++] = (Math.pow(c, 1 / 3) * 4294967296) | 0;
+    }
+    var bits = ascii.length * 8, words = [];
+    ascii += '\x80';
+    while (ascii.length % 64 - 56) ascii += '\x00';
+    for (i = 0; i < ascii.length; i++) words[i >> 2] |= ascii.charCodeAt(i) << ((3 - i) % 4) * 8;
+    words.push((bits / 4294967296) | 0, bits);
+    for (j = 0; j < words.length;) {
+      var w = words.slice(j, j += 16), old = H, h = H.slice(0, 8);
+      for (i = 0; i < 64; i++) {
+        var a = h[0], e = h[4];
+        if (i >= 16) { var w15 = w[i - 15], w2 = w[i - 2]; w[i] = (w[i - 16] + (rr(w15, 7) ^ rr(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rr(w2, 17) ^ rr(w2, 19) ^ (w2 >>> 10))) | 0; }
+        var t1 = h[7] + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & h[5]) ^ (~e & h[6])) + K[i] + w[i];
+        var t2 = (rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & h[1]) ^ (a & h[2]) ^ (h[1] & h[2]));
+        h = [(t1 + t2) | 0].concat(h.slice(0, 7));
+        h[4] = (h[4] + t1) | 0;
+      }
+      H = h.map(function (v, k) { return (v + old[k]) | 0; });
+    }
+    return H.map(function (v) { return ('00000000' + (v >>> 0).toString(16)).slice(-8); }).join('');
+  }
 
   function checksum(code, body) {
     var s = 'tilecraft-art|' + code + '|' + body, h1 = 0x811c9dc5, h2 = 0x9e3779b9;
@@ -48,9 +82,11 @@
     if (bad) return { ok: false, reason: 'confusable', message: 'Keys never contain 0, O, 1, I or L. Check the character "' + bad[0] + '" — it is probably a similar-looking letter or number.' };
     if (raw.length !== 16) return { ok: false, reason: 'length', message: 'That key looks ' + (raw.length < 16 ? 'incomplete' : 'too long') + '. A full key has 16 characters after "TILE", in groups of 2, 5, 5 and 4.' };
     var code = raw.slice(0, 2), body = raw.slice(2, 12), check = raw.slice(12);
-    if (!CODES[code]) return { ok: false, reason: 'product', message: 'We don\'t recognise the product part of that key ("' + code + '"). Check the two characters after "TILE".' };
-    if (checksum(code, body) !== check) return { ok: false, reason: 'checksum', message: 'That key didn\'t check out — there may be a typo. Compare it character by character with the key you saved.' };
+    if (!CODES[code] && code !== ADMIN.code) return { ok: false, reason: 'product', message: 'We don\'t recognise the product part of that key ("' + code + '"). Check the two characters after "TILE".' };
+    var typo = { ok: false, reason: 'checksum', message: 'That key didn\'t check out — there may be a typo. Compare it character by character with the key you saved.' };
+    if (checksum(code, body) !== check) return typo;
     var key = ['TILE', code, body.slice(0, 5), body.slice(5), check].join('-');
+    if (code === ADMIN.code) return sha256(key) === ADMIN.hash ? { ok: true, key: key, code: code, packs: ALL_PACKS.slice(), admin: true } : typo;
     return { ok: true, key: key, code: code, packs: CODES[code].slice() };
   }
   function storage() { try { return window.localStorage; } catch (e) { return null; } }
@@ -70,5 +106,5 @@
     return Object.keys(set);
   }
   function signOut() { var s = storage(); if (s) try { s.removeItem(STORE); } catch (e) { /* storage unavailable */ } }
-  return { ALPHABET: ALPHABET, CODES: CODES, generate: generate, parse: parse, normalize: normalize, checksum: checksum, savedKeys: savedKeys, saveKey: saveKey, unlockedPacks: unlockedPacks, signOut: signOut };
+  return { ALPHABET: ALPHABET, CODES: CODES, ADMIN_CODE: ADMIN.code, ALL_PACKS: ALL_PACKS, sha256: sha256, generate: generate, parse: parse, normalize: normalize, checksum: checksum, savedKeys: savedKeys, saveKey: saveKey, unlockedPacks: unlockedPacks, signOut: signOut };
 });

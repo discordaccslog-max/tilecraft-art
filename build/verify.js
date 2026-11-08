@@ -134,6 +134,16 @@ for (const p of products) {
   }
 }
 
+/* admin key: set, not mintable, and not forgeable from the source */
+if (/ADMIN_HASH_PENDING/.test(fs.readFileSync(path.join(ROOT, 'js/license.js'), 'utf8'))) fail('admin key fingerprint is not set (run node build/admin-key.js)');
+try { L.generate(L.ADMIN_CODE); fail('generate() can mint admin keys'); } catch (e) { /* expected */ }
+for (let i = 0; i < 500; i++) {
+  let body = ''; while (body.length < 10) body += L.ALPHABET[Math.floor(Math.random() * 31)];
+  const forged = ['TILE', L.ADMIN_CODE, body.slice(0, 5), body.slice(5), L.checksum(L.ADMIN_CODE, body)].join('-');
+  if (L.parse(forged).ok) { fail('a forged admin key was accepted'); break; }
+}
+if (L.ALL_PACKS.length !== catalog.packs.length) fail(`admin key unlocks ${L.ALL_PACKS.length} packs, catalog has ${catalog.packs.length}`);
+
 console.log(`scanned ${scanned} text files, ${links} internal links in ${htmlFiles.length} pages`);
 zipReport.forEach(r => console.log('  ' + r));
 if (problems.length) { console.log(`\n${problems.length} PROBLEMS:`); [...new Set(problems)].slice(0, 80).forEach(p => console.log('  - ' + p)); process.exit(1); }
