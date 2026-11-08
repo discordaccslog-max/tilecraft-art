@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://discordaccslog-max.github.io/tilecraft-art/sitemap.xml

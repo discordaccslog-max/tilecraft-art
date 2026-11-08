@@ -1,0 +1,18 @@
+{
+  "name": "tilecraft-art",
+  "version": "1.0.0",
+  "description": "Tilecraft Art storefront, pixel art packs and the Tilecraft Studio",
+  "scripts": {
+    "build": "node build/build.js",
+    "verify": "node build/verify.js",
+    "preview": "node build/serve.js 4173",
+    "review": "node build/review.js"
+  },
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "devDependencies": {
+    "fflate": "^0.8.3",
+    "pngjs": "^7.0.0"
+  },
+  "private": true
+}
