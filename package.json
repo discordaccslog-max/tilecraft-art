@@ -6,7 +6,8 @@
     "build": "node build/build.js",
     "verify": "node build/verify.js",
     "preview": "node build/serve.js 4173",
-    "review": "node build/review.js"
+    "review": "node build/review.js",
+    "deploy:vercel": "node build/stage-vercel.js && vercel deploy .deploy/tilecraft-art --prod"
   },
   "license": "UNLICENSED",
   "type": "commonjs",

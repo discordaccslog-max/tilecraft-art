@@ -15,7 +15,7 @@ const L = require('../js/license.js');
 const ROOT = path.join(__dirname, '..');
 const problems = [];
 const fail = m => problems.push(m);
-const SKIP = /[\\/](node_modules|\.git|\.review|build)([\\/]|$)/;
+const SKIP = /[\\/](node_modules|\.git|\.review|\.deploy|build)([\\/]|$)/;
 function walk(dir, out = []) {
   for (const f of fs.readdirSync(dir)) {
     const p = path.join(dir, f);
@@ -41,7 +41,8 @@ const htmlFiles = files.filter(f => f.endsWith('.html'));
 let links = 0;
 const linkTargets = {};
 for (const f of htmlFiles) {
-  const s = fs.readFileSync(f, 'utf8');
+  /* inline scripts can contain markup in strings; only real attributes count as links */
+  const s = fs.readFileSync(f, 'utf8').replace(/<script>[\s\S]*?<\/script>/g, '');
   for (const m of s.matchAll(/\s(?:href|src|data-src)="([^"]+)"/g)) {
     let u = m[1];
     if (/^(https?:|mailto:|data:|#|javascript:)/.test(u)) continue;

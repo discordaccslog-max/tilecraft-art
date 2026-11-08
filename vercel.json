@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "headers": [
+    { "source": "/studio/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+    { "source": "/(.*)\\.zip", "headers": [{ "key": "Content-Type", "value": "application/zip" }] }
+  ]
+}

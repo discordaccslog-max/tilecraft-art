@@ -32,9 +32,22 @@ const COPY = {
     body: ['Grand Atlas is an overworld set at world-map scale, where each tile is a whole region: oceans with animated swell, shallows, coastlines with animated surf, plains, forests, hills, mountain ranges, deserts and snowfields, all with 47-tile autotiling. Rivers and roads connect automatically, and bridges carry roads across rivers.', 'Towns and landmarks are marked with small icons — villages, towns, walled cities, keeps, harbours, towers, ruins, shrines, caves, mines, lighthouses, windmills, camps and monuments — along with ships, whirlpools, waves, reefs, a compass rose and a parchment border. In the studio, the overworld generator builds new worlds from a seed, with sliders for land, mountains, forests, rivers and towns, and exports them as PNG images and Tiled maps.'] }
 };
 
+/* Inline script that writes markup during parsing; "</" is escaped so the string can't close the tag. */
+const writeHTML = (prefixJS, html) => `<script>document.write(${prefixJS}${JSON.stringify(html).replace(/<\//g, '<\\/')});</script>`;
 function page(o) {
   const r = o.absRoot || '../'.repeat(o.depth || 0);
   const url = SITE + (o.path || '');
+  const headAssets = `<link rel="icon" href="${r}favicon.svg" type="image/svg+xml">
+<link rel="preload" href="${r}fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="${r}css/site.css">
+${o.head || ''}<script>(function(){var t;try{t=localStorage.getItem('tilecraft.theme')}catch(e){}if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
+`;
+  const scripts = ['js/site-config.js', 'js/products.js', 'js/site.js'].concat(o.scripts || []);
+  /* dynamicBase: the page can be served from any path (the 404 page), so its <base> and every asset
+   * are written by one inline script; the browser then never requests them from the wrong folder. */
+  const baseJS = `'<base href="' + (location.pathname.indexOf('/tilecraft-art/') === 0 ? '/tilecraft-art/' : '/') + '">' + `;
+  const head = o.dynamicBase ? writeHTML(baseJS, headAssets) + '\n' : headAssets + scripts.map(s => `<script src="${r}${s}" defer></script>`).join('\n') + '\n';
+  const tail = o.dynamicBase ? writeHTML('', scripts.map(s => `<script src="${s}"></script>`).join('')) + '\n' : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -52,15 +65,7 @@ ${o.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : `<link rel=
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14122b">
-<link rel="icon" href="${r}favicon.svg" type="image/svg+xml">
-<link rel="preload" href="${r}fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="${r}css/site.css">
-${o.head || ''}<script>(function(){var t;try{t=localStorage.getItem('tilecraft.theme')}catch(e){}if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)})();</script>
-<script src="${r}js/site-config.js" defer></script>
-<script src="${r}js/products.js" defer></script>
-<script src="${r}js/site.js" defer></script>
-${(o.scripts || []).map(s => `<script src="${r}${s}" defer></script>`).join('\n')}
-</head>
+${head}</head>
 <body class="${o.bodyClass || ''}" data-root="${r}">
 <a class="skip-link" href="#main">Skip to content</a>
 ${header(r)}
@@ -68,7 +73,7 @@ ${header(r)}
 ${o.body}
 </main>
 ${footer(r)}
-</body>
+${tail}</body>
 </html>
 `;
 }
@@ -472,10 +477,11 @@ function studioShell() {
 `;
 }
 function notFound() {
-  /* GitHub Pages serves this page at any depth, so it links with absolute project paths */
-  const r = '/tilecraft-art/';
-  const body = `<div class="wrap narrow notfound"><p class="eyebrow pixel">404</p><h1>This tile isn't on the map</h1><p class="lede">The page you're looking for doesn't exist or has moved.</p><div class="vignette" data-scene="sample" aria-hidden="true"></div><p><a class="btn btn-primary" href="${r}">Back to the home page</a> <a class="btn btn-ghost" href="${r}unlock/">Enter a key</a></p></div>`;
-  return page({ title: 'Page not found | Tilecraft Art', description: 'This page does not exist.', path: '404.html', absRoot: r, body, noindex: true, scripts: ['js/pixel.js'] });
+  /* Hosts serve this page at any depth, and the site may live at the domain root (Vercel) or
+   * under /tilecraft-art/ (GitHub Pages); dynamicBase makes every relative link resolve from the
+   * site root on either host. */
+  const body = `<div class="wrap narrow notfound"><p class="eyebrow pixel">404</p><h1>This tile isn't on the map</h1><p class="lede">The page you're looking for doesn't exist or has moved.</p><div class="vignette" data-scene="sample" aria-hidden="true"></div><p><a class="btn btn-primary" href="./">Back to the home page</a> <a class="btn btn-ghost" href="unlock/">Enter a key</a></p></div>`;
+  return page({ title: 'Page not found | Tilecraft Art', description: 'This page does not exist.', path: '404.html', depth: 0, dynamicBase: true, body, noindex: true, scripts: ['js/pixel.js'] });
 }
 
 function writeAll(root, ctx) {

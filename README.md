@@ -18,6 +18,8 @@ npm run verify     # links, placeholder scan, zip contents, keys
 npm run preview    # local preview at http://localhost:4173/tilecraft-art/
 ```
 
+The site is also hosted on Vercel. `npm run deploy:vercel` copies only the built site into `.deploy/tilecraft-art` and deploys it to production (needs the Vercel CLI, signed in). It works at the domain root as well as under a sub-path, because every page uses relative links.
+
 `build/review.js <pack>` writes contact sheets to `.review/` for visual checks.
 
 ## How the pieces fit
